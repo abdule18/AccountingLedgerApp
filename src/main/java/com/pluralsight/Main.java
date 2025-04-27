@@ -38,7 +38,7 @@ public class Main {
         } while (!option.equalsIgnoreCase("x"));
     }
 
-private static void addDeposit(){
+    private static void addDeposit(){
     FileWriter fileWriter = null;
     try {
         fileWriter = new FileWriter("deposit_Info.csv");
@@ -47,7 +47,7 @@ private static void addDeposit(){
         System.out.print("How much would you like to deposit? Please enter an Amount: ");
         String  amount = scanner.nextLine();
 
-        bufWriter.write("The amout diposite is: " + amount);
+        bufWriter.write("The amout diposited is: " + amount);
 
         bufWriter.close();
     } catch (IOException e) {
@@ -56,11 +56,38 @@ private static void addDeposit(){
 
 }
 
-private static void makePayment(){
-    System.out.println("Make payment In progresss.....");
+    private static void makePayment(){
+
+        FileWriter fileWriter = null;
+        try {
+            fileWriter = new FileWriter("debit_info.csv");
+            BufferedWriter bufWriter = new BufferedWriter(fileWriter);
+
+
+            System.out.println("Enter your Debit information below: ");
+            System.out.print("Name on card: ");
+            String cardHolderName = scanner.nextLine();
+            System.out.print("Card Number: ");
+            long cardNumber = scanner.nextLong();
+            scanner.nextLine();
+            System.out.print("Enter Expiration Date (MM/YY): ");
+            String expirationDate = scanner.nextLine();
+            System.out.print("Enter CVV (3-4 digit code): ");
+            int cvvCode = scanner.nextInt();
+            scanner.nextLine();
+
+            bufWriter.write("Name on Card:\n" + cardHolderName +
+                    "\nCard Number:\n" + cardNumber + "\nExpiration Date:\n" + expirationDate +
+                    "\nCVV:\n" + cvvCode);
+            bufWriter.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+
 }
 
-private static void displayLedger(){
+    private static void displayLedger(){
     System.out.println("Ledger In progresss.....");
 }
 }
