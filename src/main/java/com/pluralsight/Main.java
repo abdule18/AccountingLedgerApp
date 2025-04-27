@@ -1,5 +1,8 @@
 package com.pluralsight;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Scanner;
 
 public class Main {
@@ -36,7 +39,21 @@ public class Main {
     }
 
 private static void addDeposit(){
-    System.out.println("Add Deposite In progresss.....");
+    FileWriter fileWriter = null;
+    try {
+        fileWriter = new FileWriter("deposit_Info.csv");
+        BufferedWriter bufWriter = new BufferedWriter(fileWriter);
+
+        System.out.print("How much would you like to deposit? Please enter an Amount: ");
+        String  amount = scanner.nextLine();
+
+        bufWriter.write("The amout diposite is: " + amount);
+
+        bufWriter.close();
+    } catch (IOException e) {
+        throw new RuntimeException(e);
+    }
+
 }
 
 private static void makePayment(){
