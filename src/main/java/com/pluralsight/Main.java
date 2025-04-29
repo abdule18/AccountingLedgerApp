@@ -1,7 +1,7 @@
 package com.pluralsight;
 
 import java.io.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -44,7 +44,7 @@ public class Main {
 
     private static void addDeposit() {
 
-        LocalDateTime date = LocalDateTime.now();
+        LocalDate date = LocalDate.now();
         LocalTime time = LocalTime.now();
 
         System.out.print("Enter a description: ");
@@ -90,7 +90,7 @@ public class Main {
     }
 
     private static void makePayment() {
-        LocalDateTime date = LocalDateTime.now();
+        LocalDate date = LocalDate.now();
         LocalTime time = LocalTime.now();
 
         System.out.print("Enter a description: ");
@@ -124,6 +124,7 @@ public class Main {
 
     }
 
+
     private static void displayLedger() {
 
         String userPromptOptions = "Please choose an option you would like to move forward with:\n" +
@@ -145,7 +146,7 @@ public class Main {
             } else if (option.equalsIgnoreCase("P")) {
                 displayNegativePayments();
             } else if (option.equalsIgnoreCase("R")) {
-                repotOptions();
+                reportOptions();
             }
         } while (!option.equalsIgnoreCase("H"));
     }
@@ -162,7 +163,7 @@ public class Main {
         System.out.println("Negative Payments pending......");
     }
 
-    private static void repotOptions() {
+    private static void reportOptions() {
         System.out.println("Reports pending......");
     }
 
@@ -195,7 +196,7 @@ public class Main {
     public static Transaction getTransactionFromEncodedString(String dataString) {
         String[] tokens = dataString.split("\\|");
 
-        LocalDateTime date = LocalDateTime.parse(tokens[0]);
+        LocalDate date = LocalDate.parse(tokens[0]);
         LocalTime time = LocalTime.parse(tokens[1]);
         String description = tokens[2];
         String vendor = tokens[3];
