@@ -2,6 +2,7 @@ package com.pluralsight;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 public class Transaction {
     private LocalDate date;
@@ -58,8 +59,12 @@ public class Transaction {
         this.amount = amount;
     }
 
+    public String getFormattedTime(){
+        return this.time.format(DateTimeFormatter.ofPattern("HH:mm:ss"));
+    }
+
     public String getEncodedText(){
-        return this.date + "|" + this.time + ":" + "|" + this.description + "|" + this.vendor + "|" + this.amount;
+        return this.date + "|" + getFormattedTime() + "|" + this.description + "|" + this.vendor + "|" + this.amount;
     }
 
     public static String getFormattedBookTextHeader(){
