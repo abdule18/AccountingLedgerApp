@@ -31,8 +31,7 @@ public class Main {
         String option;
 
         do {
-            System.out.println(userPromptOptions);
-            option = scanner.nextLine();
+            option = console.promptForString(userPromptOptions);
 
             if (option.equalsIgnoreCase("D")) {
                 addDeposit();
@@ -84,7 +83,6 @@ public class Main {
 
     }
 
-
     private static void displayLedger() {
 
         String userPromptOptions = "Please choose an option you would like to move forward with:\n" +
@@ -118,15 +116,50 @@ public class Main {
     }
 
     private static void displayEntriesDeposits() {
-        System.out.println("Deposits Entries pending......");
+        System.out.println("Deposits Entries");
+        for (Transaction t : transactions){
+            if (t.getAmount() > 0){
+                System.out.println(t.getEncodedText());
+            }
+        }
     }
 
     private static void displayNegativePayments() {
-        System.out.println("Negative Payments pending......");
+        System.out.println("Payments Entries");
+        for (Transaction t : transactions){
+            if (t.getAmount() < 0){
+                System.out.println(t.getEncodedText());
+            }
+        }
     }
 
     private static void reportOptions() {
-        System.out.println("Reports pending......");
+        System.out.println("Reports");
+        String userPromptOptions = "Please choose an option you would like to move forward with:\n" +
+                "1 - Month To Date\n" +
+                "2 - Previous Month\n" +
+                "3 - Year To Date\n" +
+                "4 - Previous Yea\n" +
+                "5 - Search by Vendor\n" +
+                "0 - Back\n";
+        int option;
+
+        do {
+            option = console.promptForInt(userPromptOptions);
+
+            if (option == 1) {
+//                addDeposit();
+            } else if (option == 2) {
+//                makePayment();
+            } else if (option == 3) {
+//                displayLedger();
+            } else if (option == 4) {
+//                displayLedger();
+            } else if (option == 5) {
+//                displayLedger();
+            }
+        } while (option != 0);
+
     }
 
 }
