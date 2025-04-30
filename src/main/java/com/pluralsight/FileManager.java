@@ -28,10 +28,9 @@ public class FileManager {
             fileWriter = new FileWriter(fileName, true);
             BufferedWriter bufWriter = new BufferedWriter(fileWriter);
 
-            for (Transaction t : transactions){
-                bufWriter.write(t.getEncodedText());
-                bufWriter.newLine();
-            }
+            Transaction t = transactions.get(transactions.size() - 1);
+            bufWriter.write(t.getEncodedText());
+            bufWriter.newLine();
 
             bufWriter.close();
         } catch (IOException e) {

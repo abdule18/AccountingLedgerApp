@@ -16,7 +16,7 @@ public class Main {
     public static void main(String[] args) {
         fileName = "transactions.csv";
         fileManager = new FileManager(fileName);
-        fileManager.readTransactionsFromFile();
+        transactions = fileManager.readTransactionsFromFile();
         homeScreen();
     }
 
@@ -112,7 +112,9 @@ public class Main {
     }
 
     private static void displayAllEntries() {
-        System.out.println("Display All Entries pending......");
+        for (Transaction t : transactions){
+            System.out.println(t.getEncodedText());
+        }
     }
 
     private static void displayEntriesDeposits() {
