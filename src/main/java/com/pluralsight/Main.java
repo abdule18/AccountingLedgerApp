@@ -11,6 +11,7 @@ public class Main {
     private static String fileName;
     private static Scanner scanner = new Scanner(System.in);
     private static FileManager fileManager = new FileManager(fileName);
+    private static Console console = new Console();
 
     public static void main(String[] args) {
         fileName = "transactions.csv";
@@ -48,15 +49,11 @@ public class Main {
         LocalDate date = LocalDate.now();
         LocalTime time = LocalTime.now();
 
-        System.out.print("Enter a description: ");
-        String description = scanner.nextLine();
+        String description = console.promptForString("Enter description: ");
 
-        System.out.print("Where you depositing from: ");
-        String vendor = scanner.nextLine();
+        String vendor = console.promptForString("Enter Vendor: ");
 
-        System.out.print("How much would you like to deposit? Please enter an Amount: ");
-        double amount = scanner.nextDouble();
-        scanner.nextLine();
+        double amount =  console.promptForDouble("Enter Deposit Amount: ");
 
         Transaction newTransaction = new Transaction(date, time, description, vendor, amount);
         transactions.add(newTransaction);
@@ -71,15 +68,11 @@ public class Main {
         LocalDate date = LocalDate.now();
         LocalTime time = LocalTime.now();
 
-        System.out.print("Enter a description: ");
-        String description = scanner.nextLine();
+        String description = console.promptForString("Enter description: ");
 
-        System.out.print("Enter the vendor: ");
-        String vendor = scanner.nextLine();
+        String vendor = console.promptForString("Enter Vendor: ");
 
-        System.out.print("Amount you would like to pay: ");
-        double amount = scanner.nextDouble();
-        scanner.nextLine();
+        double amount =  console.promptForDouble("Amount you would like to pay: ");
 
         Transaction newTransaction = new Transaction(date, time, description, vendor, -amount);
         transactions.add(newTransaction);
