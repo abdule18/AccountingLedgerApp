@@ -172,6 +172,7 @@ public class Main {
                 "3 - Year To Date\n" +
                 "4 - Previous Year\n" +
                 "5 - Search by Vendor\n" +
+                "6 - Custom Search\n" +
                 "0 - Back\n";
         int option;
 
@@ -189,6 +190,8 @@ public class Main {
                 displayPreviousYear();
             } else if (option == 5) {
                 searchByVendor();
+            } else if (option == 6) {
+                customSearch();
             }
         // if user option is 0 return to the ledger screen
         } while (option != 0);
@@ -261,6 +264,33 @@ public class Main {
         System.out.println(Transaction.getFormattedBookTextHeader());
         for (Transaction t : transactions){
             if (t.getVendor().equalsIgnoreCase(vendorSearch)){
+                System.out.println(t.getFormattedTransactionText());
+            }
+        }
+    }
+
+    private static void customSearch(){
+        String startDateStr = console.promptForString("Enter Start Date (yyyy-mm-dd) or press enter to skip: ");
+        String endDateStr = console.promptForString("Enter End Date (yyyy-mm-dd) or press enter to skip: ");
+        String description = console.promptForString("Enter Description or press enter to skip: ");
+        String vendor = console.promptForString("Enter Vendor or press enter to skip: ");
+        String amountStr = console.promptForString("Enter Amount or press enter to skip: ");
+
+        LocalDate startDate = null;
+        LocalDate endDate = null;
+        Double amount = null;
+
+
+        try{
+            if (!startDateStr.isBlank()) startDate = LocalDate.parse(startDateStr);
+            if (!endDateStr.isBlank()) endDate = LocalDate.parse(endDateStr);
+            if (!amountStr.isBlank()) amount = Double.parseDouble(amountStr);
+        } catch (Exception e) {
+            System.out.println("Invalid input. Please make sure date are in yyyy-mm-dd format and amount is a number.");
+        }
+        System.out.println(Transaction.getFormattedBookTextHeader());
+        for (Transaction t : transactions){
+            if ((startDate ==  null || !t.getDate().isBefore(startDate)) && (endDate == null || !t.getDate().isAfter(endDate)) && (description.isBlank() || t.getDescription().equalsIgnoreCase(description)) && (vendor.isBlank() || t.getVendor().equalsIgnoreCase(vendor)) && (amount == null || t.getAmount() == amount)) {
                 System.out.println(t.getFormattedTransactionText());
             }
         }
