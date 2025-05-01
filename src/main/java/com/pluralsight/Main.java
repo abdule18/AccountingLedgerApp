@@ -3,6 +3,7 @@ package com.pluralsight;
 import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -36,17 +37,22 @@ public class Main {
             if (option.equalsIgnoreCase("D")) {
                 addDeposit();
             } else if (option.equalsIgnoreCase("P")) {
-                makePayment();
+                addPayment();
             } else if (option.equalsIgnoreCase("L")) {
-                displayLedger();
+                ledgerScreen();
             }
         } while (!option.equalsIgnoreCase("x"));
     }
 
     private static void addDeposit() {
 
-        LocalDate date = LocalDate.now();
+        LocalDate date = null;
         LocalTime time = LocalTime.now();
+
+        String dateInput = console.promptForString("Enter date (YYYY-MM-DD): ");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+        date = LocalDate.parse(dateInput, formatter);
 
         String description = console.promptForString("Enter description: ");
 
@@ -63,9 +69,14 @@ public class Main {
 
     }
 
-    private static void makePayment() {
-        LocalDate date = LocalDate.now();
+    private static void addPayment() {
+        LocalDate date = null;
         LocalTime time = LocalTime.now();
+
+        String dateInput = console.promptForString("Enter date (YYYY-MM-DD): ");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+        date = LocalDate.parse(dateInput, formatter);
 
         String description = console.promptForString("Enter description: ");
 
@@ -76,14 +87,15 @@ public class Main {
         Transaction newTransaction = new Transaction(date, time, description, vendor, -amount);
         transactions.add(newTransaction);
 
-        fileManager.writeTransactionsToFile(transactions);
+        fileManager.addTransactionToFile(newTransaction);
+        //fileManager.writeTransactionsToFile(transactions);
 
         System.out.println(newTransaction.getEncodedText());
 
 
     }
 
-    private static void displayLedger() {
+    private static void ledgerScreen() {
 
         String userPromptOptions = "Please choose an option you would like to move forward with:\n" +
                 "A - All\n" +
@@ -94,15 +106,14 @@ public class Main {
         String option;
 
         do {
-            System.out.println(userPromptOptions);
-            option = scanner.nextLine();
+            option = console.promptForString(userPromptOptions);
 
             if (option.equalsIgnoreCase("A")) {
                 displayAllEntries();
             } else if (option.equalsIgnoreCase("D")) {
                 displayEntriesDeposits();
             } else if (option.equalsIgnoreCase("P")) {
-                displayNegativePayments();
+                displayEntriesPayments();
             } else if (option.equalsIgnoreCase("R")) {
                 reportOptions();
             }
@@ -110,25 +121,28 @@ public class Main {
     }
 
     private static void displayAllEntries() {
+        System.out.println(Transaction.getFormattedBookTextHeader());
         for (Transaction t : transactions){
-            System.out.println(t.getEncodedText());
+            System.out.println(t.getFormattedTransactionText());
         }
     }
 
     private static void displayEntriesDeposits() {
         System.out.println("Deposits Entries");
+        System.out.println(Transaction.getFormattedBookTextHeader());
         for (Transaction t : transactions){
             if (t.getAmount() > 0){
-                System.out.println(t.getEncodedText());
+                System.out.println(t.getFormattedTransactionText());
             }
         }
     }
 
-    private static void displayNegativePayments() {
+    private static void displayEntriesPayments() {
         System.out.println("Payments Entries");
+        System.out.println(Transaction.getFormattedBookTextHeader());
         for (Transaction t : transactions){
             if (t.getAmount() < 0){
-                System.out.println(t.getEncodedText());
+                System.out.println(t.getFormattedTransactionText());
             }
         }
     }
@@ -139,7 +153,7 @@ public class Main {
                 "1 - Month To Date\n" +
                 "2 - Previous Month\n" +
                 "3 - Year To Date\n" +
-                "4 - Previous Yea\n" +
+                "4 - Previous Year\n" +
                 "5 - Search by Vendor\n" +
                 "0 - Back\n";
         int option;
@@ -148,18 +162,83 @@ public class Main {
             option = console.promptForInt(userPromptOptions);
 
             if (option == 1) {
-//                addDeposit();
+                displayMonthToDate();
             } else if (option == 2) {
-//                makePayment();
+                displayPreviousMonth();
             } else if (option == 3) {
-//                displayLedger();
+                displayYearToDate();
             } else if (option == 4) {
-//                displayLedger();
+                displayPreviousYear();
             } else if (option == 5) {
-//                displayLedger();
+                searchByVendor();
             }
         } while (option != 0);
 
     }
 
+    private static void displayMonthToDate() {
+        LocalDate date = LocalDate.now();
+        LocalDate firstDayOfMonth = date.withDayOfMonth(1);
+
+        System.out.println(Transaction.getFormattedBookTextHeader());
+        for (Transaction t : transactions) {
+            if (!t.getDate().isBefore(firstDayOfMonth)) {
+                System.out.println(t.getFormattedTransactionText());
+            }
+        }
+
+    }
+
+    private static void displayPreviousMonth() {
+        LocalDate date = LocalDate.now();
+        LocalDate firstDayOfMonth = date.withDayOfMonth(1);
+        LocalDate firstDayPrev = firstDayOfMonth.minusMonths(1);
+        LocalDate lastDayPrev = firstDayOfMonth.minusDays(1);
+
+        System.out.println(Transaction.getFormattedBookTextHeader());
+        for (Transaction t : transactions) {
+            if (!t.getDate().isBefore(firstDayPrev) && !t.getDate().isAfter(lastDayPrev)) {
+                System.out.println(t.getFormattedTransactionText());
+            }
+        }
+
+    }
+
+    private static void displayYearToDate() {
+        LocalDate date = LocalDate.now();
+        LocalDate firstDayOfYear = date.withDayOfYear(1);
+
+        System.out.println(Transaction.getFormattedBookTextHeader());
+        for (Transaction t : transactions) {
+            if (!t.getDate().isBefore(firstDayOfYear)) {
+                System.out.println(t.getFormattedTransactionText());
+            }
+        }
+
+    }
+
+    private static void displayPreviousYear() {
+        int lastYear = LocalDate.now().getYear() - 1;
+        LocalDate start = LocalDate.of(lastYear,1,1);
+        LocalDate end = LocalDate.of(lastYear,12,31);
+
+        System.out.println(Transaction.getFormattedBookTextHeader());
+        for (Transaction t : transactions) {
+            if (!t.getDate().isBefore(start) && !t.getDate().isAfter(end)) {
+                System.out.println(t.getFormattedTransactionText());
+            }
+        }
+
+    }
+
+    private static void searchByVendor(){
+        String vendorSearch = console.promptForString("Enter vendor name to search: ");
+
+        System.out.println(Transaction.getFormattedBookTextHeader());
+        for (Transaction t : transactions){
+            if (t.getVendor().equalsIgnoreCase(vendorSearch)){
+                System.out.println(t.getFormattedTransactionText());
+            }
+        }
+    }
 }

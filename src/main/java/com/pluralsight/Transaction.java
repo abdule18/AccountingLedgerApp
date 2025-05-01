@@ -67,8 +67,16 @@ public class Transaction {
         return this.date + "|" + getFormattedTime() + "|" + this.description + "|" + this.vendor + "|" + this.amount;
     }
 
+    public String getFormattedTransactionText() {
+        return String.format(
+                "%-12s %-10s %-20s %-15s %10.2f",
+                this.date, getFormattedTime(), this.description, this.vendor, this.amount
+        );
+    }
+
+
     public static String getFormattedBookTextHeader(){
-        return "DATE | TIME | DESCRIPTION | VENDOR | AMOUNT\n+" +
-                "+-- - ---- - ----------- - ------- -------+";
+        return "DATE       | TIME     | DESCRIPTION        | VENDOR          | AMOUNT\n+" +
+                "--------- - -------- - ------------------ - --------------- - --------+";
     }
 }

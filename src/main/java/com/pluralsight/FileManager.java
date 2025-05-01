@@ -21,6 +21,23 @@ public class FileManager {
         this.fileName = fileName;
     }
 
+
+    public void  addTransactionToFile(Transaction transaction) {
+        FileWriter fileWriter = null;
+
+        try {
+            fileWriter = new FileWriter(fileName, true);
+            BufferedWriter bufWriter = new BufferedWriter(fileWriter);
+
+            bufWriter.write(transaction.getEncodedText());
+            bufWriter.newLine();
+
+            bufWriter.close();
+        } catch (IOException e) {
+            System.out.println("Failed to write transactions to file!");
+        }
+
+    }
     public void  writeTransactionsToFile(ArrayList<Transaction> transactions) {
         FileWriter fileWriter = null;
 
