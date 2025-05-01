@@ -8,16 +8,22 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
-    private static ArrayList<Transaction> transactions = new ArrayList<Transaction>();
+    // List to store all transactions
+    private static ArrayList<Transaction> transactions;
     private static String fileName;
     private static Scanner scanner = new Scanner(System.in);
-    private static FileManager fileManager = new FileManager(fileName);
+    private static FileManager fileManager;
     private static Console console = new Console();
 
     public static void main(String[] args) {
+
+        // Initialize file name and file manager
         fileName = "transactions.csv";
         fileManager = new FileManager(fileName);
+
+        // Read all existing transactions from file
         transactions = fileManager.readTransactionsFromFile();
+        // call/launch home screen
         homeScreen();
     }
 
@@ -31,9 +37,11 @@ public class Main {
                 "X - Exit\n";
         String option;
 
+        // Looping until user chooses to exit
         do {
             option = console.promptForString(userPromptOptions);
 
+            // Prompt user for an option
             if (option.equalsIgnoreCase("D")) {
                 addDeposit();
             } else if (option.equalsIgnoreCase("P")) {
@@ -41,18 +49,18 @@ public class Main {
             } else if (option.equalsIgnoreCase("L")) {
                 ledgerScreen();
             }
-        } while (!option.equalsIgnoreCase("x"));
+        //  if option is X Exit everything
+        } while (!option.equalsIgnoreCase("X"));
     }
 
+    // This method handles adding deposit transaction
     private static void addDeposit() {
 
-        LocalDate date = null;
+
         LocalTime time = LocalTime.now();
 
-        String dateInput = console.promptForString("Enter date (YYYY-MM-DD): ");
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-
-        date = LocalDate.parse(dateInput, formatter);
+        // These variable prompting the user for transaction details using the console class
+        LocalDate date = console.promptForDate("Enter date (YYYY-MM-DD): ");
 
         String description = console.promptForString("Enter description: ");
 
@@ -60,6 +68,7 @@ public class Main {
 
         double amount =  console.promptForDouble("Enter Deposit Amount: ");
 
+        // These Create new transaction and save it
         Transaction newTransaction = new Transaction(date, time, description, vendor, amount);
         transactions.add(newTransaction);
 
@@ -69,14 +78,13 @@ public class Main {
 
     }
 
+    // This method handles adding a payment (debate) transaction
     private static void addPayment() {
-        LocalDate date = null;
+
         LocalTime time = LocalTime.now();
 
-        String dateInput = console.promptForString("Enter date (YYYY-MM-DD): ");
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-
-        date = LocalDate.parse(dateInput, formatter);
+        // These variable is prompting the user for transaction details using the console class
+        LocalDate date = console.promptForDate("Enter date (YYYY-MM-DD): ");
 
         String description = console.promptForString("Enter description: ");
 
@@ -84,6 +92,7 @@ public class Main {
 
         double amount =  console.promptForDouble("Amount you would like to pay: ");
 
+        // These Create new transaction and save it, Payments are recorded as negative amounts
         Transaction newTransaction = new Transaction(date, time, description, vendor, -amount);
         transactions.add(newTransaction);
 
@@ -95,6 +104,7 @@ public class Main {
 
     }
 
+    // This method displays the ledger options
     private static void ledgerScreen() {
 
         String userPromptOptions = "Please choose an option you would like to move forward with:\n" +
@@ -105,9 +115,11 @@ public class Main {
                 "H - Home\n";
         String option;
 
+        //  Loop until user choose to return to home screen
         do {
             option = console.promptForString(userPromptOptions);
 
+            // Prompt user for an option
             if (option.equalsIgnoreCase("A")) {
                 displayAllEntries();
             } else if (option.equalsIgnoreCase("D")) {
@@ -115,11 +127,13 @@ public class Main {
             } else if (option.equalsIgnoreCase("P")) {
                 displayEntriesPayments();
             } else if (option.equalsIgnoreCase("R")) {
-                reportOptions();
+                reportsScreen();
             }
+        // if user option H return to  the home screen
         } while (!option.equalsIgnoreCase("H"));
     }
 
+    // This  method displays all transactions
     private static void displayAllEntries() {
         System.out.println(Transaction.getFormattedBookTextHeader());
         for (Transaction t : transactions){
@@ -127,6 +141,7 @@ public class Main {
         }
     }
 
+    // This method displays only deposit transactions
     private static void displayEntriesDeposits() {
         System.out.println("Deposits Entries");
         System.out.println(Transaction.getFormattedBookTextHeader());
@@ -137,6 +152,7 @@ public class Main {
         }
     }
 
+    // This method displays only payment transactions
     private static void displayEntriesPayments() {
         System.out.println("Payments Entries");
         System.out.println(Transaction.getFormattedBookTextHeader());
@@ -147,7 +163,8 @@ public class Main {
         }
     }
 
-    private static void reportOptions() {
+    // This method displays report menu options
+    private static void reportsScreen() {
         System.out.println("Reports");
         String userPromptOptions = "Please choose an option you would like to move forward with:\n" +
                 "1 - Month To Date\n" +
@@ -158,6 +175,7 @@ public class Main {
                 "0 - Back\n";
         int option;
 
+        // Prompt user for an option
         do {
             option = console.promptForInt(userPromptOptions);
 
@@ -172,10 +190,12 @@ public class Main {
             } else if (option == 5) {
                 searchByVendor();
             }
+        // if user option is 0 return to the ledger screen
         } while (option != 0);
 
     }
 
+    // This method show all transactions from current month
     private static void displayMonthToDate() {
         LocalDate date = LocalDate.now();
         LocalDate firstDayOfMonth = date.withDayOfMonth(1);
@@ -189,6 +209,7 @@ public class Main {
 
     }
 
+    // This method show all transactions from previous month
     private static void displayPreviousMonth() {
         LocalDate date = LocalDate.now();
         LocalDate firstDayOfMonth = date.withDayOfMonth(1);
@@ -204,6 +225,7 @@ public class Main {
 
     }
 
+    // This method show all transactions from current year
     private static void displayYearToDate() {
         LocalDate date = LocalDate.now();
         LocalDate firstDayOfYear = date.withDayOfYear(1);
@@ -217,6 +239,7 @@ public class Main {
 
     }
 
+    // This method show all transactions from previous year
     private static void displayPreviousYear() {
         int lastYear = LocalDate.now().getYear() - 1;
         LocalDate start = LocalDate.of(lastYear,1,1);
@@ -231,6 +254,7 @@ public class Main {
 
     }
 
+    // This method search for transaction by vendor name
     private static void searchByVendor(){
         String vendorSearch = console.promptForString("Enter vendor name to search: ");
 

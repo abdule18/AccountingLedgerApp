@@ -74,7 +74,6 @@ public class Transaction {
         );
     }
 
-
     public static String getFormattedBookTextHeader(){
         return "DATE       | TIME     | DESCRIPTION        | VENDOR          | AMOUNT\n+" +
                 "--------- - -------- - ------------------ - --------------- - --------+";
