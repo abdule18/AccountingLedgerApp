@@ -26,7 +26,7 @@ These are the features:
 - 🧠 Command-Line Interface
 
 
-## Tech Stack
+## Tech Used
 
     1. Java
     2. IntelliJ IDEA
