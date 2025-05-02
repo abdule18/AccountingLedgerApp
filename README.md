@@ -6,11 +6,11 @@ The Accounting Ledger Application is a command-line Java program that's built in
 
 The goal is to provide a simple personal or small business ledger that uses basic file I/O in Java.
 
-## Screenshots
+## Screenshots of main screen
 
 <img width="780" alt="main_menu" src="https://github.com/user-attachments/assets/aaeb9713-bc74-42b0-90fd-5b6f5f49217d" />
 
-##
+## Screenshot of Transactions
 
 <img width="780" alt="transaction_display" src="https://github.com/user-attachments/assets/a79f3d68-6376-49e5-8e65-e5891c373973" />
 
