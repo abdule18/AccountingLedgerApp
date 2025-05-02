@@ -10,9 +10,6 @@ The goal is to provide a simple personal or small business ledger that uses basi
 
 ![Alt display](<img width="787" alt="main_menu" src="https://github.com/user-attachments/assets/7b2b3051-0d0e-4cc6-b451-0d1f5d01704c" />
 )
-##
-![Alt display](<img width="789" alt="transaction_display" src="https://github.com/user-attachments/assets/3432ebe7-3a20-4532-b8f5-edcc6df6a7ee" />
-)
 
 
 ## Features
