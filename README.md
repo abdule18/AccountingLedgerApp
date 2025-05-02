@@ -8,7 +8,7 @@ The goal is to provide a simple personal or small business ledger that uses basi
 
 ## Screenshots
 
-<img width="700" alt="main_menu" src="https://github.com/user-attachments/assets/aaeb9713-bc74-42b0-90fd-5b6f5f49217d" />
+<img width="750" alt="main_menu" src="https://github.com/user-attachments/assets/aaeb9713-bc74-42b0-90fd-5b6f5f49217d" />
 
 
 ## Features
