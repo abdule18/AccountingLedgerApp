@@ -1,24 +1,20 @@
 package com.pluralsight;
 
-import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Scanner;
+
 
 public class Main {
     // List to store all transactions
     private static ArrayList<Transaction> transactions;
-    private static String fileName;
-    private static Scanner scanner = new Scanner(System.in);
     private static FileManager fileManager;
-    private static Console console = new Console();
+    private static final Console console = new Console();
 
     public static void main(String[] args) {
 
         // Initialize file name and file manager
-        fileName = "transactions.csv";
+        String fileName = "transactions.csv";
         fileManager = new FileManager(fileName);
 
         // Read all existing transactions from file
